@@ -2,6 +2,11 @@
 
 1) After including budget constraint, only economy class items are selected:
 Reason - possibly better value function required 
-solution - solves the issue partially after simplifying the value function
+solution - solves the issue after simplifying the value function
 
 2) After including budget constraint, for any class, low priced items are selected. Value function is fine.
+Reason: Optimizer tries to maximize not just objective function but also the price - budget gap.
+Consider 2 scenarios:
+total price low, value 100
+total price high but under budget, value 100 (same) 
+optimizer selects scenario 1 

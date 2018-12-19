@@ -71,11 +71,11 @@ def lp_optimizer(testing, n_assets):
     # Objective: Maximize value
     prob += total_val, "Maximize total value of selected items"
 
-    # Constrain 1: number of items >= 0
+    # Constrain 1: number of items lower bound
     prob += sum(item_indicator_list) >= 0, "Total number of items selcted is positive"
 
-    # number of items <= 5
-    #prob += sum(item_indicator_list) <= 5, "Total number of items selcted is finite"
+    # number of items upper bound
+    prob += sum(item_indicator_list) <= 5, "Total number of items selcted is finite"
 
     # Constraint 3: total price <= budget
     prob += total_price <= customer_budget, "Budget Requirement"
