@@ -10,11 +10,12 @@ from Globals import *
 def read_customer_input(testing):
 
     if testing:
-        # temporarily test inputs
+
+        # test inputs
         customer_type = "BachelorGamer"
         customer_budget = 100000
         room_type = "LivingRoom"
-        room_area = 100
+        room_area = 200
         return [customer_type, customer_budget, room_type, room_area]
     else:
         return 

@@ -41,7 +41,7 @@ def lp_optimizer(testing, n_assets):
     total_area = 0
     
     # Selected items for each type and class
-    item_qty = [[0] * len(item_classes) for i in range(len(item_types))]
+    item_qty = [[0] * len(item_classes) for i in range(0, len(item_types))]
     
     for i in range(0, len(item_obj_list)):
     	
@@ -75,7 +75,7 @@ def lp_optimizer(testing, n_assets):
     prob += sum(item_indicator_list) >= 0, "Total number of items selcted is positive"
 
     # number of items upper bound
-    prob += sum(item_indicator_list) <= 10, "Total number of items selcted is finite"
+    prob += sum(item_indicator_list) <= 20, "Total number of items selcted is finite"
 
     # Constraint 3: total price <= budget
     prob += total_price <= customer_budget, "Budget Requirement"
@@ -108,14 +108,18 @@ def lp_optimizer(testing, n_assets):
     for i in range(0, len(item_qty)):
 
         # Constraint 10: mutually exclusive sets, Depends upon: item type, item class
-        prob += int(item_qty[i][0] > 0) ^ int(item_qty[i][1] > 0) ^ int(item_qty[i][2] > 0) == 1
-        #prob += (int(item_qty[i][0] > 0) & int(item_qty[i][1] > 0) & int(item_qty[i][2] > 0) == 0)
+        prob += (bool(item_qty[i][0]) ^ bool(item_qty[i][1]) ^ bool(item_qty[i][2])) == True, '%d'%i
 
+    #for i in range(0, len(item_qty)):
+    #    prob += int(item_qty[i][0] > 0) & int(item_qty[i][1] > 0) & int(item_qty[i][2] > 0) == 0
+
+    for i in range(0, len(item_qty)):
+        
         # Constraint 11, 12: upper and lower bounds
         prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] >= item_lower_bounds[i, room_types.index(room_type), customer_types.index(customer_type)]
         prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] <= item_upper_bounds[i, room_types.index(room_type), customer_types.index(customer_type)]
 
-    print ("\nDone formulating the problem")
+    print ("Done")
     
     ##
     ### 3. Run MILP solver
@@ -128,7 +132,8 @@ def lp_optimizer(testing, n_assets):
 
     # The problem is solved using PuLP's cbc Solver
     prob.solve(PULP_CBC_CMD())
-    print("Status: ", LpStatus[prob.status])
+    print ("Status: ", LpStatus[prob.status])
+    print ("")
 
     total_price = 0
     total_area = 0
@@ -139,17 +144,21 @@ def lp_optimizer(testing, n_assets):
             k = k.split('_')
             total_price += int(k[2]) * v.varValue
             total_area += int(k[3]) * v.varValue
-            print '%20s' % k[0] + ", " + "Class: " + '%7s' % k[1] + ", " + "Price: " + '%4s' % k[2] + ", " + "Area: "+ '%2s' % k[3] + " =", v.varValue
+            print '%13s' % k[0] + ", " + "Class: " + '%7s' % k[1] + ", " + "Price: " + '%4s' % k[2] + ", " + "Area: "+ '%2s' % k[3] + " =", v.varValue
 
-    print ("Covered price: ", total_price, " Customer budget: ", customer_budget)
-    print ("Covered area:  ", total_area, " Available room area: ", room_area)
-    print("Total value achieved = ", value(prob.objective))
+    print ("")
+    print ("Customer Type:         ", customer_type)
+    print ("Room Type:             ", room_type)
+    print ("Covered price:         ", total_price, " Customer budget:    ", customer_budget)
+    print ("Covered area:          ", total_area, " Available room area: ", room_area)
+    print ("Total value achieved = ", value(prob.objective))
 
 # Entry function
 if __name__ == "__main__":
 
+    # Test model
     testing = True
     n_assets = 1000
-    print("Number of assets: ", n_assets)
+    print ("Number of assets: ", n_assets)
     
     lp_optimizer(testing, n_assets)

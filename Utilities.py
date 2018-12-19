@@ -22,9 +22,10 @@ def asset_bounds(room_type):
     if room_type == "LivingRoom":
         for i in range(0, len(item_types)):
 
-            # Hardcoding to be removed later, Part of 'Room Planning Model'
+            ## Hardcoding to be removed later, Part of 'Room Planning Model'
+            ##
             # 3 mandatory items for living room
-            if (item_types[i] == "Lights") or (item_types[i] == "TV") or (item_types[i] == "Curtains"):
+            if (item_types[i] == "Lights") or (item_types[i] == "TV") or (item_types[i] == "Curtains") or (item_types[i] == "Carpet"):
                 item_lower_bounds[i, 0, 0] = 1
             else:
                 item_lower_bounds[i, 0, 0] = 0
@@ -32,4 +33,4 @@ def asset_bounds(room_type):
             if (item_types[i] == "PillowSet") or (item_types[i] == "PillowCoverSet") or (item_types[i] == "Curtains") or (item_types[i] == "Lights") or (item_types[i] == "Plant") or (item_types[i] == "Planter"):
                 item_upper_bounds[i, 0, 0] = 10
             else:
-                item_upper_bounds[i, 0, 0] = 1
+                item_upper_bounds[i, 0, 0] = 2
