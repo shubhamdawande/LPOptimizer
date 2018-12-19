@@ -18,12 +18,17 @@ def asset_val_function(testing):
 # Handle asset quantity
 def asset_bounds(room_type):
 
-	# 3 mandatory items for living room
+	
     if room_type == "LivingRoom":
         for i in range(0, len(item_types)):
+
+            # 3 mandatory items for living room
             if (item_types[i] == "Lights") or (item_types[i] == "TV") or (item_types[i] == "Curtains"):
                 item_lower_bounds[i, 0, 0] = 1
             else:
                 item_lower_bounds[i, 0, 0] = 0
 
-            item_upper_bounds[i, 0, 0] = 2
+            if (item_types[i] == "PillowSet") or (item_types[i] == "PillowCoverSet") or (item_types[i] == "Curtains") or (item_types[i] == "Lights") or (item_types[i] == "Plant") or (item_types[i] == "Planter"):
+                item_upper_bounds[i, 0, 0] = 10
+            else:
+                item_upper_bounds[i, 0, 0] = 1

@@ -75,7 +75,7 @@ def lp_optimizer(testing, n_assets):
     prob += sum(item_indicator_list) >= 0, "Total number of items selcted is positive"
 
     # number of items upper bound
-    prob += sum(item_indicator_list) <= 5, "Total number of items selcted is finite"
+    prob += sum(item_indicator_list) <= 10, "Total number of items selcted is finite"
 
     # Constraint 3: total price <= budget
     prob += total_price <= customer_budget, "Budget Requirement"
@@ -89,19 +89,20 @@ def lp_optimizer(testing, n_assets):
     #
     
     # Constraint 2: qty of beds <= qty of mattresses
-    #prob += sum(item_qty[item_types.index("Bed")][:]) <= sum(item_qty[item_types.index("Mattress")][:]), "Bed VS Mattress QTY"
+    prob += sum(item_qty[item_types.index("Bed")][:]) <= sum(item_qty[item_types.index("Mattress")][:]), "Bed VS Mattress QTY"
 
     # Constraint 9: Console qty = tv qty
-    #prob += n_consoles == n_tvs, "Console VS TV QTY"
+    prob += sum(item_qty[item_types.index("GamingConsole")][:]) == sum(item_qty[item_types.index("TV")][:]), "Console VS TV QTY"
 
     # Constraint 6
-    #prob += n_plants == n_planters
+    prob += sum(item_qty[item_types.index("Plant")][:]) == sum(item_qty[item_types.index("Planter")][:]), "QTY Plant equals Planter"
 
     # Constraint 7
-    #prob += n_pillows == n_pillowcovers
+    prob += sum(item_qty[item_types.index("PillowSet")][:]) == sum(item_qty[item_types.index("PillowCoverSet")][:]), "QTY Pillows equal Covers"
 
     # Constraint 8
-    #prob += n_pillows >= n_mattresses
+    prob += sum(item_qty[item_types.index("PillowSet")][:]) >= sum(item_qty[item_types.index("Mattress")][:]), "QTY Pillows greater than Mattress"
+
     ###################################################
 
     for i in range(0, len(item_qty)):
@@ -136,8 +137,8 @@ def lp_optimizer(testing, n_assets):
         if v.varValue > 0:
             k = v.name
             k = k.split('_')
-            total_price += int(k[2])*v.varValue
-            total_area += int(k[3])*v.varValue
+            total_price += int(k[2]) * v.varValue
+            total_area += int(k[3]) * v.varValue
             print '%20s' % k[0] + ", " + "Class: " + '%7s' % k[1] + ", " + "Price: " + '%4s' % k[2] + ", " + "Area: "+ '%2s' % k[3] + " =", v.varValue
 
     print ("Covered price: ", total_price, " Customer budget: ", customer_budget)

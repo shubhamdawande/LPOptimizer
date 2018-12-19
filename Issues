@@ -10,3 +10,4 @@ Consider 2 scenarios:
 total price low, value 100
 total price high but under budget, value 100 (same) 
 optimizer selects scenario 1 
+This happens since value depends only on item class not price

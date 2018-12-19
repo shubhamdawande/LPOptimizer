@@ -10,7 +10,7 @@ room_types = ["LivingRoom"]
 
 # Furniture asset types
 item_types = ["Bed", "Mattress", "Wardrobe", "Lights", "Curtains", "Dressing", "SideTable", "Carpet", "Bookshelf",
-              "Vase", "Planter", "Plant", "Shelf", "PillowsSet", "PillowCoverSet", "TV", "GamingConsole", "LaptopTable"]
+              "Vase", "Planter", "Plant", "Shelf", "PillowSet", "PillowCoverSet", "TV", "GamingConsole", "LaptopTable"]
 
 # Area: per item type
 item_areas = [30, 30, 12, 0, 0, 6, 1, 2, 6, 0, 0, 0, 0, 0, 0, 0, 2, 0]

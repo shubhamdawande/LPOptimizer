@@ -14,7 +14,7 @@ def read_customer_input(testing):
         customer_type = "BachelorGamer"
         customer_budget = 100000
         room_type = "LivingRoom"
-        room_area = 300
+        room_area = 100
         return [customer_type, customer_budget, room_type, room_area]
     else:
         return 
