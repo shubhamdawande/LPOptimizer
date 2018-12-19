@@ -1,0 +1,7 @@
+### Issues
+
+1) After including budget constraint, only economy class items are selected:
+Reason - possibly better value function required 
+solution - solves the issue partially after simplifying the value function
+
+2) After including budget constraint, for any class, low priced items are selected. Value function is fine.
