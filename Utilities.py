@@ -22,6 +22,7 @@ def asset_bounds(room_type):
     if room_type == "LivingRoom":
         for i in range(0, len(item_types)):
 
+            # Hardcoding to be removed later, Part of 'Room Planning Model'
             # 3 mandatory items for living room
             if (item_types[i] == "Lights") or (item_types[i] == "TV") or (item_types[i] == "Curtains"):
                 item_lower_bounds[i, 0, 0] = 1
