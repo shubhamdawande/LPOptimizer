@@ -1,37 +1,49 @@
-from Globals import value_of_items, item_lower_bounds, item_upper_bounds, item_types
+from Globals import *
 
 ##
 ## Utility Functions
 ##
 
-# Value function: depends upon customer type, item type, item class
-# no of items of same type and no of dependent items, price point 
-def asset_val_function(testing):
+#
+# Value function: depends upon customer type, Asset type, Asset class
+# For no of asset of same type and no of dependent asset value decreases for subsequent asset, price point 
+#
+def update_val_function(testing):
     if testing:
         # Set manual values 
-        value_of_items[:, 0, 0] = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10]
-        value_of_items[:, 1, 0] = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
-        value_of_items[:, 2, 0] = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200]
+        value_of_items[:, 0, 0] = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 7]
+        value_of_items[:, 1, 0] = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+        value_of_items[:, 2, 0] = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200]
 
-        #value_of_items[:, 1, 0] = [6, 12, 6, 12, 2.4, 1.2, 3.6, 2.4, 6.5, 1.2, 2.4, 2.4, 9.6, 7.2, 3.6, 14.6, 14.6, 7.5]
-        #value_of_items[:, 2, 0] = [6.5, 13, 6.5, 13, 2.5, 1.2, 3.75, 2.5, 6.75, 1.25, 2.5, 2.5, 10, 6, 3.75, 16, 16, 8]
+#
+# Limit assets qty
+#
+def create_asset_bounds(room_type, customer_persona):
 
-# Handle asset quantity
-def asset_bounds(room_type):
+    mandatory_activity_list = room_activity_dict[room_type]
+    
+    for i in range(0, len(asset_categories)):
 
-	
+        # minimum 1 mandatory item to be selected
+        if category_activity_dict[asset_categories[i]] in mandatory_activity_list:
+             asset_lower_bounds[i, 0, 0] = 1
+        else:
+            asset_lower_bounds[i, 0, 0] = 0
+
+    '''
     if room_type == "LivingRoom":
-        for i in range(0, len(item_types)):
+        for i in range(0, len(asset_categories)):
 
             ## Hardcoding to be removed later, Part of 'Room Planning Model'
-            ##
-            # 3 mandatory items for living room
-            if (item_types[i] == "Lights") or (item_types[i] == "TV") or (item_types[i] == "Curtains") or (item_types[i] == "Carpet"):
-                item_lower_bounds[i, 0, 0] = 1
-            else:
-                item_lower_bounds[i, 0, 0] = 0
 
-            if (item_types[i] == "PillowSet") or (item_types[i] == "PillowCoverSet") or (item_types[i] == "Curtains") or (item_types[i] == "Lights") or (item_types[i] == "Plant") or (item_types[i] == "Planter"):
-                item_upper_bounds[i, 0, 0] = 10
+            # 3 mandatory items for living room
+            if (asset_categories[i] == "Lights") or (asset_categories[i] == "TV") or (asset_categories[i] == "Curtains") or (asset_categories[i] == "Carpet"):
+                asset_lower_bounds[i, 0, 0] = 1
             else:
-                item_upper_bounds[i, 0, 0] = 2
+                asset_lower_bounds[i, 0, 0] = 0
+
+            if (asset_categories[i] == "PillowSet") or (asset_categories[i] == "PillowCoverSet") or (asset_categories[i] == "Curtains") or (asset_categories[i] == "Lights") or (asset_categories[i] == "Plant") or (asset_categories[i] == "Planter"):
+                asset_upper_bounds[i, 0, 0] = 10
+            else:
+                asset_upper_bounds[i, 0, 0] = 1
+    '''

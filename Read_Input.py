@@ -3,8 +3,10 @@ import numpy as np
 import pickle
 
 # Custom imports
-from Item import Item
+from Asset import Asset
 from Globals import *
+from Room import Room
+from Customer import Customer
 
 ##
 ## Query Customer and Asset Data
@@ -13,19 +15,22 @@ from Globals import *
 # Read Customer Input
 def read_customer_input(testing):
 
+    # test inputs
     if testing:
-
-        # test inputs
-        customer_type = "BachelorGamer"
+        customer_persona = "BachelorGamer"
         customer_budget = 10000
-        room_type = "LivingRoom"
+        room_category = "LivingRoom"
         room_area = 200
-        return [customer_type, customer_budget, room_type, room_area]
+
+        room = Room(room_area, room_category)
+        customer_test = Customer("customer_test", customer_persona, customer_budget, room)
+        return customer_test
+
     else:
         return 
 
 ## Retrieve available assets from server
-def read_asset_data(customer_type, room_type, n_items, testing):
+def read_asset_data(customer_category, room_category, n_items, testing):
     
     ## Generate data for testing
     if testing:
@@ -33,17 +38,17 @@ def read_asset_data(customer_type, room_type, n_items, testing):
         
         for i in range(0, n_items):
 
-            # Item type
-            random_item_type_index = np.random.randint(0, len(item_types))
-            random_type = item_types[random_item_type_index]
+            # Asset type
+            random_item_category_index = np.random.randint(0, len(asset_categories))
+            random_category = asset_categories[random_item_category_index]
 
-            # Item area
-            random_area = item_areas[random_item_type_index]
+            # Asset area
+            random_area = asset_areas[random_item_category_index]
 
-            # Item class
-            random_class = random.choice(item_classes)
+            # Asset class
+            random_class = random.choice(asset_classes)
 
-            # Item price
+            # Asset price
             random_price = 0
             if random_class == "Economy":
                 random_price = random.randint(0, 3000)
@@ -52,19 +57,19 @@ def read_asset_data(customer_type, room_type, n_items, testing):
             elif random_class == "Luxury":
                 random_price = random.randint(10000, 20000)
 
-            # Item bounds
-            lower_bound = item_lower_bounds[random_item_type_index, room_types.index(room_type), customer_types.index(customer_type)]
-            upper_bound = item_upper_bounds[random_item_type_index, room_types.index(room_type), customer_types.index(customer_type)]
+            # Asset bounds
+            lower_bound = asset_lower_bounds[random_item_category_index, room_types.index(room_category), customer_personas.index(customer_category)]
+            upper_bound = asset_upper_bounds[random_item_category_index, room_types.index(room_category), customer_personas.index(customer_category)]
 
-            # Item value
+            # Asset value
             if random_class == "Economy":
-                item_value = value_of_items[random_item_type_index, 0, customer_types.index(customer_type)]
+                item_value = value_of_items[random_item_category_index, 0, customer_personas.index(customer_category)]
             else:
-                item_value = value_of_items[random_item_type_index, 0, customer_types.index(customer_type)] * (
-                1 + value_of_items[random_item_type_index, item_classes.index(random_class), customer_types.index(customer_type)] /100
+                item_value = value_of_items[random_item_category_index, 0, customer_personas.index(customer_category)] * (
+                1 + value_of_items[random_item_category_index, asset_classes.index(random_class), customer_personas.index(customer_category)] /100
                 )
 
-            item_obj = Item(random_type, random_price, random_class, random_area, upper_bound, lower_bound, item_value)
+            item_obj = Asset(random_category, random_price, random_class, random_area, upper_bound, lower_bound, item_value)
 
             item_obj_list.append(item_obj)
 
