@@ -46,7 +46,7 @@ def lp_optimizer(testing, n_assets):
     	
         item_indicator_list.append(LpVariable(
             item_obj_list[i].type_item + "_" + item_obj_list[i].class_item + "_" + str(item_obj_list[i].price_item) + "_"
-            + str(item_obj_list[i].area_item) + "_" + str(i), 
+            + str(item_obj_list[i].area_item) + "_" + str(item_obj_list[i].value_item) + "_" + str(i), 
             0,
             None, 
             LpInteger))
@@ -80,7 +80,7 @@ def lp_optimizer(testing, n_assets):
     prob += total_price <= customer_budget, "Budget Requirement"
 
     # Constraint 4: total area <= available area
-    prob += total_area <= room_area, "Area Requirement"
+    #prob += total_area <= room_area/4, "Area Requirement"
 
     ##############################################
     ##
@@ -103,23 +103,25 @@ def lp_optimizer(testing, n_assets):
     prob += sum(item_qty[item_types.index("PillowSet")][:]) >= sum(item_qty[item_types.index("Mattress")][:]), "QTY Pillows greater than Mattress"
 
     ###############################################
+   
+    # # Constraint 11, 12: Upper and Lower bounds for individual assets
+    #for i in range(0, len(item_qty)):
 
+        #prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] >= item_lower_bounds[i, room_types.index(room_type), customer_types.index(customer_type)]
+        #prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] <= item_upper_bounds[i, room_types.index(room_type), customer_types.index(customer_type)]
+
+    # Constraint 10: mutually exclusive sets, Depends upon: item type, item class
     for i in range(0, len(item_qty)):
-
-        # Constraint 10: mutually exclusive sets, Depends upon: item type, item class
+        
         #prob += (bool(item_qty[i][0]) ^ bool(item_qty[i][1]) ^ bool(item_qty[i][2])) == True, '%d'%i
         #prob += int(bool(item_qty[i][0])) ^ int(bool(item_qty[i][1])) ^ int(bool(item_qty[i][2])) == 1, '%d'%i
         #prob += int(bool(item_qty[i][0])) + int(bool(item_qty[i][1])) + int(bool(item_qty[i][2])) <= 1
 
-    #for i in range(0, len(item_qty)):
-    #    prob += int(item_qty[i][0] > 0) & int(item_qty[i][1] > 0) & int(item_qty[i][2] > 0) == 0
-
-    for i in range(0, len(item_qty)):
+        #prob += item_qty[i][0] and item_qty[i][1] and item_qty[i][2] == 0
         
-        # Constraint 11, 12: upper and lower bounds
+        prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] <= min(max(item_qty[i][0], item_qty[i][1], item_qty[i][2]), item_upper_bounds[i, room_types.index(room_type), customer_types.index(customer_type)])
         prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] >= item_lower_bounds[i, room_types.index(room_type), customer_types.index(customer_type)]
-        prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] <= item_upper_bounds[i, room_types.index(room_type), customer_types.index(customer_type)]
-
+    
     print ("Done")
     
     ##
@@ -132,7 +134,8 @@ def lp_optimizer(testing, n_assets):
     prob.writeLP("data/BudgetOptimizationVersion1.lp")
 
     # The problem is solved using PuLP's cbc Solver
-    prob.solve(PULP_CBC_CMD())
+    #prob.solve(PULP_CBC_CMD())
+    prob.solve()
     print ("Status: ", LpStatus[prob.status])
     print ("")
 
@@ -145,7 +148,7 @@ def lp_optimizer(testing, n_assets):
             k = k.split('_')
             total_price += int(k[2]) * v.varValue
             total_area += int(k[3]) * v.varValue
-            print '%13s' % k[0] + ", " + "Class: " +'%7s' % k[1] + ", " + "Price: " + '%4s' % k[2] + ", " + "Area: "+ '%2s' % k[3] + ", " +"Qty: " + '%d'%v.varValue
+            print '%15s' % k[0] + ", " + "Class: " +'%7s' % k[1] + ", " + "Price: " + '%6s' % k[2] + ", " + "Area: "+ '%2s' % k[3] + ", " + "Value: " + '%4s'%k[4] + ", " + "Qty: " + '%d'%v.varValue
 
     print ("")
     print ("Customer Persona:    ", customer_type)

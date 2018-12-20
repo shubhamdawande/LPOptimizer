@@ -17,7 +17,7 @@ def read_customer_input(testing):
 
         # test inputs
         customer_type = "BachelorGamer"
-        customer_budget = 20000
+        customer_budget = 10000
         room_type = "LivingRoom"
         room_area = 200
         return [customer_type, customer_budget, room_type, room_area]

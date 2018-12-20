@@ -13,3 +13,6 @@ optimizer selects scenario 1
 This happens since value depends only on item class not price
 ->To be fixed
 -> Solution: value function modelling as per price point
+
+3) mutually exclusive relationship: E,P,L
+Solution 1 - 

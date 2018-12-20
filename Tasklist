@@ -1,9 +1,13 @@
 ## TaskList
 
 1) Solve mutually exclusive problem
-2) remove hardcoding
+
+2) remove hardcoding, categorize assets as per existing database
 3) create functional heirarchy(sitting, sleeping) per room
+
 4) model value function, currently model product based
 5) Create initial rule engine
+
 6) Get dataset from existing mongodb dataset for optimizer input 
+
 7) Area requirement(wall area, ground area, table area) to be done later
