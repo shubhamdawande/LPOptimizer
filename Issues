@@ -12,4 +12,4 @@ total price high but under budget, value 100 (same)
 optimizer selects scenario 1 
 This happens since value depends only on item class not price
 ->To be fixed
--> Solution: value function modelling: customer type 
+-> Solution: value function modelling as per price point

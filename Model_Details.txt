@@ -1,31 +1,19 @@
-constraints:
+LP Objective and Constraints:
 
 maximize sum(value of item * item indicator)
 
 constraints:
-
 1. no of items >=0 
-
 qty of each items = integer
-
 2. no of beds <= nMattresses
-
 3. selcted item price total <= total budget
-
 4. selcted item area total <= total area/k
-
 5. vase qty <= side shelf qty
-
 6. plant qty = planter qty
-
 7. pillow qty = pillowset qty
-
 8. pillowset qty >= mattress qty
-
 9. gaming console qty = tv qty
-
 10. same item economy + premium + luxury => mutually exclusive <= 1
-
 11. item type quantity <= upper bound 
-
 12. item type quantity >= lower bound
+

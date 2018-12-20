@@ -12,16 +12,16 @@ from Utilities import asset_bounds, asset_val_function
 def lp_optimizer(testing, n_assets):
 
     ##
-    ### 1. Required Input Data Retrival
+    ### 1. Required Data Retrival
     ##
 
     # Get customer input
     [customer_type, customer_budget, room_type, room_area] = read_customer_input(testing)
 
-    # Asset upper/lower bounds
+    # Set asset upper/lower bounds
     asset_bounds(room_type)
 
-    # Global value function
+    # Set global value function: Customer behaviour modelling
     asset_val_function(testing)
 
     # Retrieve asset data
@@ -34,7 +34,6 @@ def lp_optimizer(testing, n_assets):
     print("Forming the MILP problem....")
     prob = LpProblem("The Budget Optimization Problem", LpMaximize)
 
-    # Hardcoding to be removed later
     total_val = 0
     item_indicator_list = []
     total_price = 0
@@ -83,10 +82,10 @@ def lp_optimizer(testing, n_assets):
     # Constraint 4: total area <= available area
     prob += total_area <= room_area, "Area Requirement"
 
-    ##################################################
-    #
-    ## Customizable constraints
-    #
+    ##############################################
+    ##
+    ### Customizable constraints
+    ##
     
     # Constraint 2: qty of beds <= qty of mattresses
     prob += sum(item_qty[item_types.index("Bed")][:]) <= sum(item_qty[item_types.index("Mattress")][:]), "Bed VS Mattress QTY"
@@ -103,12 +102,14 @@ def lp_optimizer(testing, n_assets):
     # Constraint 8
     prob += sum(item_qty[item_types.index("PillowSet")][:]) >= sum(item_qty[item_types.index("Mattress")][:]), "QTY Pillows greater than Mattress"
 
-    ###################################################
+    ###############################################
 
     for i in range(0, len(item_qty)):
 
         # Constraint 10: mutually exclusive sets, Depends upon: item type, item class
-        prob += (bool(item_qty[i][0]) ^ bool(item_qty[i][1]) ^ bool(item_qty[i][2])) == True, '%d'%i
+        #prob += (bool(item_qty[i][0]) ^ bool(item_qty[i][1]) ^ bool(item_qty[i][2])) == True, '%d'%i
+        #prob += int(bool(item_qty[i][0])) ^ int(bool(item_qty[i][1])) ^ int(bool(item_qty[i][2])) == 1, '%d'%i
+        #prob += int(bool(item_qty[i][0])) + int(bool(item_qty[i][1])) + int(bool(item_qty[i][2])) <= 1
 
     #for i in range(0, len(item_qty)):
     #    prob += int(item_qty[i][0] > 0) & int(item_qty[i][1] > 0) & int(item_qty[i][2] > 0) == 0
@@ -144,14 +145,16 @@ def lp_optimizer(testing, n_assets):
             k = k.split('_')
             total_price += int(k[2]) * v.varValue
             total_area += int(k[3]) * v.varValue
-            print '%13s' % k[0] + ", " + "Class: " + '%7s' % k[1] + ", " + "Price: " + '%4s' % k[2] + ", " + "Area: "+ '%2s' % k[3] + " =", v.varValue
+            print '%13s' % k[0] + ", " + "Class: " +'%7s' % k[1] + ", " + "Price: " + '%4s' % k[2] + ", " + "Area: "+ '%2s' % k[3] + ", " +"Qty: " + '%d'%v.varValue
 
     print ("")
-    print ("Customer Type:         ", customer_type)
-    print ("Room Type:             ", room_type)
-    print ("Covered price:         ", total_price, " Customer budget:    ", customer_budget)
-    print ("Covered area:          ", total_area, " Available room area: ", room_area)
-    print ("Total value achieved = ", value(prob.objective))
+    print ("Customer Persona:    ", customer_type)
+    print ("Room Type:           ", room_type)
+    print ("Covered Price:       ", total_price)
+    print ("Customer Budget:     ", customer_budget)
+    print ("Covered Area:        ", total_area)
+    print ("Available Room Area: ", room_area)
+    print ("Total value achieved:", value(prob.objective))
 
 # Entry function
 if __name__ == "__main__":

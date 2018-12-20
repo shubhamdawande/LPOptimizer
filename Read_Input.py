@@ -6,6 +6,10 @@ import pickle
 from Item import Item
 from Globals import *
 
+##
+## Query Customer and Asset Data
+##
+
 # Read Customer Input
 def read_customer_input(testing):
 
@@ -13,7 +17,7 @@ def read_customer_input(testing):
 
         # test inputs
         customer_type = "BachelorGamer"
-        customer_budget = 100000
+        customer_budget = 20000
         room_type = "LivingRoom"
         room_area = 200
         return [customer_type, customer_budget, room_type, room_area]

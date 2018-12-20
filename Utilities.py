@@ -5,6 +5,7 @@ from Globals import value_of_items, item_lower_bounds, item_upper_bounds, item_t
 ##
 
 # Value function: depends upon customer type, item type, item class
+# no of items of same type and no of dependent items, price point 
 def asset_val_function(testing):
     if testing:
         # Set manual values 
