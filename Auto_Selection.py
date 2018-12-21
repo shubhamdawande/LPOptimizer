@@ -102,22 +102,8 @@ def lp_optimizer(testing, n_assets):
     # Constraint 8
     prob += sum(item_qty[asset_categories.index("PillowSet")][:]) >= sum(item_qty[asset_categories.index("Mattress")][:]), "QTY Pillows greater than Mattress"
 
-    '''
-    ## Constraint 11, 12: Upper and Lower bounds for individual assets
-    for i in range(0, len(item_qty)):
-
-        prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] >= asset_lower_bounds[i, room_types.index(room_category), customer_personas.index(customer_category)]
-        prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] <= asset_upper_bounds[i, room_types.index(room_category), customer_personas.index(customer_category)]
-    '''
-
     # Constraint 10 + 11,12: mutually exclusive sets, Depend upon: Asset type, Asset class
     for i in range(0, len(item_qty)):
-        
-        #prob += (bool(item_qty[i][0]) ^ bool(item_qty[i][1]) ^ bool(item_qty[i][2])) == True, '%d'%i
-        #prob += int(bool(item_qty[i][0])) ^ int(bool(item_qty[i][1])) ^ int(bool(item_qty[i][2])) == 1, '%d'%i
-        #prob += int(bool(item_qty[i][0])) + int(bool(item_qty[i][1])) + int(bool(item_qty[i][2])) <= 1
-
-        #prob += item_qty[i][0] and item_qty[i][1] and item_qty[i][2] == 0
         
         prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] <= min(max(item_qty[i][0], item_qty[i][1], item_qty[i][2]), asset_upper_bounds[i, room_types.index(customer._room._type), customer_personas.index(customer._persona)])
         prob += item_qty[i][0] + item_qty[i][1] + item_qty[i][2] >= asset_lower_bounds[i, room_types.index(customer._room._type), customer_personas.index(customer._persona)]
@@ -134,8 +120,8 @@ def lp_optimizer(testing, n_assets):
     prob.writeLP("data/BudgetOptimizationVersion1.lp")
 
     # The problem is solved using PuLP's cbc Solver
-    #prob.solve(PULP_CBC_CMD())
-    prob.solve()
+    prob.solve(pulp.PULP_CBC_CMD())
+    #prob.solve()
     print ("Status: ", pulp.LpStatus[prob.status])
     print ("")
 

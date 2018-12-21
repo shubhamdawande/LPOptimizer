@@ -34,16 +34,17 @@ def read_asset_data(customer_category, room_category, n_items, testing):
     
     ## Generate data for testing
     if testing:
+
         item_obj_list = []
         
         for i in range(0, n_items):
 
             # Asset type
-            random_item_category_index = np.random.randint(0, len(asset_categories))
-            random_category = asset_categories[random_item_category_index]
+            random_category_index = np.random.randint(0, len(asset_categories))
+            random_category = asset_categories[random_category_index]
 
             # Asset area
-            random_area = asset_areas[random_item_category_index]
+            random_area = asset_areas[random_category_index]
 
             # Asset class
             random_class = random.choice(asset_classes)
@@ -58,15 +59,15 @@ def read_asset_data(customer_category, room_category, n_items, testing):
                 random_price = random.randint(10000, 20000)
 
             # Asset bounds
-            lower_bound = asset_lower_bounds[random_item_category_index, room_types.index(room_category), customer_personas.index(customer_category)]
-            upper_bound = asset_upper_bounds[random_item_category_index, room_types.index(room_category), customer_personas.index(customer_category)]
+            lower_bound = asset_lower_bounds[random_category_index, room_types.index(room_category), customer_personas.index(customer_category)]
+            upper_bound = asset_upper_bounds[random_category_index, room_types.index(room_category), customer_personas.index(customer_category)]
 
             # Asset value
             if random_class == "Economy":
-                item_value = value_of_items[random_item_category_index, 0, customer_personas.index(customer_category)]
+                item_value = value_of_items[random_category_index, 0, customer_personas.index(customer_category)]
             else:
-                item_value = value_of_items[random_item_category_index, 0, customer_personas.index(customer_category)] * (
-                1 + value_of_items[random_item_category_index, asset_classes.index(random_class), customer_personas.index(customer_category)] /100
+                item_value = value_of_items[random_category_index, 0, customer_personas.index(customer_category)] * (
+                1 + value_of_items[random_category_index, asset_classes.index(random_class), customer_personas.index(customer_category)] /100
                 )
 
             item_obj = Asset(random_category, random_price, random_class, random_area, upper_bound, lower_bound, item_value)

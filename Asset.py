@@ -2,10 +2,13 @@
 
 class Asset:
 
-    # Asset properties
+    # Product features
 
     # product category
     _category = ""
+
+    # subcategory
+    _subcategory = ""
 
     # product price
     _price = 0
@@ -34,3 +37,4 @@ class Asset:
         self._upperbound = asset_upperbound
         self._lowerbound = asset_lowerbound
         self._value = asset_value
+        

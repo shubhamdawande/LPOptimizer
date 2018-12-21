@@ -20,18 +20,56 @@ qty of each items = integer
 12. Asset type quantity >= lower bound
 13. curtain qty == 4* no of windows 
 
+
 **** Dataset details
 
-asset class [id, category, price, area]
 
-customer class [id, name, persona, budget, room]
+## Classes
 
-room class [id, type, area]
+asset     [id, category, price, area]
 
-asset category list []
+customer  [id, name, persona, budget, room]
 
-all activities list []
+room      [id, type, area]
 
-per room activities dictionary [room type : activities]
 
-per category activities dictionary [asset category: activity]
+## Fixed Global lists
+
+asset category []
+
+asset areas []
+
+asset classes []
+
+customer personas []
+
+room types []
+
+activities/product functionalities list []
+
+
+## lookup dictionaries
+
+room - activities dictionary [room type : activities]
+
+category - activities dictionary [asset category: activity]
+
+
+## Variable data structures
+
+asset upper bounds [asset category, room type, customer persona]
+
+asset lower bounds [asset category, room type, customer persona]
+
+value function for assets [asset category, asset class, customer persona]
+
+
+## Trained data to be used later
+
+1. value function for assets [n features] 
+# features: asset category, asset class, customer persona, no of assets of same type already selected,
+no of asset of dependent types already selected
+
+2. asset lower/upper bounds [n features]
+# features: asset category, room type, customer persona
+
